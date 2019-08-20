@@ -1,11 +1,14 @@
 package instagram.clone.beans;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 public class User {
 	
 	private String userName;
 	private String password;
 	private String bio;
-	private String registrationDate;
+	private Timestamp registrationDate;
 	
 	public User() {}
 
@@ -32,12 +35,15 @@ public class User {
 	public void setBio(String bio) {
 		this.bio = bio;
 	}
-
-	public String getRegistrationDate() {
-		return registrationDate;
+	
+	//returns convert Timestamp to Date and returns Date datatype
+	public Date getRegistrationDate() {
+		Date date = new Date(registrationDate.getTime());
+		
+		return date;
 	}
 
-	public void setRegistrationDate(String registrationDate) {
+	public void setRegistrationDate(Timestamp registrationDate) {
 		this.registrationDate = registrationDate;
 	}
 	
