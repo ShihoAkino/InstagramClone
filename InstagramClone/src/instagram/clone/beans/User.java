@@ -37,10 +37,14 @@ public class User {
 	}
 	
 	//returns convert Timestamp to Date and returns Date datatype
-	public Date getRegistrationDate() {
+	public Date getRegistrationDateAsDateType() {
 		Date date = new Date(registrationDate.getTime());
 		
 		return date;
+	}
+	
+	public Timestamp getRegistrationDate() {
+		return registrationDate;
 	}
 
 	public void setRegistrationDate(Timestamp registrationDate) {
