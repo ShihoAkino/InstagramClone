@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import instagram.clone.beans.User;
 
-public class Utils {
+public class MyUtils {
 	
 	public static final String ATT_NAME_FOR_CONNECTION = "ATTRIBUTE_FOR_CONNECTION";
 	
@@ -47,7 +47,7 @@ public class Utils {
 	
 	// Store information in Cookie
 	public static void storeUserCookie(HttpServletResponse response, User user) {
-		System.out.println("Store user cookie");
+		System.out.println("Store user in cookie");
 		Cookie cookieUserName = new Cookie(ATT_NAME_USER_NAME, user.getUserName());
 		// store the information in the cookie for 1 day
 		cookieUserName.setMaxAge(24*60*60);
