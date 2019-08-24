@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
+import instagram.clone.beans.Post;
 import instagram.clone.beans.User;
 
 public class DBUtils {
@@ -71,10 +74,74 @@ public class DBUtils {
 		PreparedStatement pstm = conn.prepareStatement(sql);
 		pstm.setString(1, user.getUserName());
 		pstm.setString(2, user.getPassword());
-		pstm.setString(3, user.getBio());
+		
+		if (user.getBio() == null) {
+			pstm.setString(3,  null);
+		} else {
+			pstm.setString(3, user.getBio());
+		}
+		
 		pstm.setTimestamp(4, user.getRegistrationDate());
 		
 		pstm.executeUpdate();
 	}
+	
+	// add a post to the database
+	// user this when a user upload a post 
+	public static void insertPost(Connection conn, Post post) throws SQLException { 
+		String sql = "INSERT INTO Post(description, author, pictureLink, posted_date, category)"
+				+ "values(?, ?, ?, ?, ?)";
+		
+		PreparedStatement pstm = conn.prepareStatement(sql);
+		
+		if (post.getDescription() == null) {
+			pstm.setString(1, null);
+		}else {
+			pstm.setString(1, post.getDescription());
+		}
+		
+		pstm.setString(2, post.getAuthor());
+		pstm.setString(3, post.getPictureLink());
+		pstm.setTimestamp(4, post.getPostedDate());
+		
+		if (post.getCategory() == null) {
+			pstm.setString(5, null);
+		} else {
+			pstm.setString(5, post.getCategory());
+		}
+		
+		pstm.executeUpdate();
+		
+	}
+	
+	// Find posts by author
+	public static Map<Integer, Post> findPost(Connection conn, String author) throws SQLException {
+		String sql = "SELECT * FROM Post WEHRE author = ?";
+		
+		PreparedStatement pstm = conn.prepareStatement(sql);
+		pstm.setString(1, author);
+		
+		ResultSet rs = pstm.executeQuery();
+		
+		Map<Integer, Post> resultMap = new HashMap<Integer, Post>();
+		while (rs.next()) {
+			Post post = new Post();
+			post.setPostId(rs.getInt("post_id"));
+			post.setDescription(rs.getString("description"));
+			post.setAuthor(rs.getString("author"));
+			post.setPictureLink(rs.getString("picture_link"));
+			post.setPostedDate(rs.getTimestamp("posted_date"));
+			
+			resultMap.put(rs.getInt("post_id"), post);
+		}
+		
+		if (resultMap.isEmpty()) {
+			return null;
+		}
+		
+		return resultMap;
+	}
+	
+	
 
 }

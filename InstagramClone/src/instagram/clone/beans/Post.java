@@ -1,15 +1,19 @@
 package instagram.clone.beans;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 public class Post {
-	
+
 	private int postId;
 	private String description;
 	private String author;
 	private String pictureLink;
-	private String postedDate;
+	private Timestamp postedDate;
 	private String category;
-	
-	public Post() {}
+
+	public Post() {
+	}
 
 	public int getPostId() {
 		return postId;
@@ -43,11 +47,19 @@ public class Post {
 		this.pictureLink = pictureLink;
 	}
 
-	public String getPostedDate() {
+	public Timestamp getPostedDate() {
 		return postedDate;
 	}
 
-	public void setPostedDate(String postedDate) {
+	// returns convert Timestamp to Date and returns Date datatype
+	public Date getPostedDateAsDateType() {
+		Date date = new Date(postedDate.getTime());
+
+		return date;
+	}
+
+
+	public void setPostedDate(Timestamp postedDate) {
 		this.postedDate = postedDate;
 	}
 
@@ -58,7 +70,5 @@ public class Post {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	
-	
 
 }
