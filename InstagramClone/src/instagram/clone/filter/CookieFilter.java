@@ -32,6 +32,7 @@ public class CookieFilter implements Filter {
 	@Override 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) 
 			throws ServletException, IOException {
+		System.out.println("cookie Filter");
 		
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpSession session = req.getSession();
@@ -52,14 +53,16 @@ public class CookieFilter implements Filter {
 		String checked = (String) session.getAttribute("COOKIE_CHECKED");
 		if (checked == null && conn != null) {
 			String userName = MyUtils.getUserNameInCookie(req);
-			try {
-				User user = DBUtils.findUser(conn, userName);
-				MyUtils.storeLoginedUser(session, user);
-			} catch (SQLException e) {
-				e.printStackTrace();
+			if (userName != null) {
+				try {
+					User user = DBUtils.findUser(conn, userName);
+					MyUtils.storeLoginedUser(session, user);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				// Mark checked cookies
+				session.setAttribute("COOKIE_CHECKED", "CHEKCED");
 			}
-			// Mark checked cookies
-			session.setAttribute("COOKIE_CHECKED", "CHEKCED");
 		}
 		
 		chain.doFilter(request, response);
