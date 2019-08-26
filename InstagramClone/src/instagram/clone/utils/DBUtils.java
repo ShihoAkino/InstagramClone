@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -81,7 +82,7 @@ public class DBUtils {
 			pstm.setString(3, user.getBio());
 		}
 		
-		pstm.setTimestamp(4, user.getRegistrationDate());
+		pstm.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
 		
 		pstm.executeUpdate();
 	}

@@ -8,9 +8,29 @@ public class User {
 	private String userName;
 	private String password;
 	private String bio;
+	
+	// This field is automatically filled in DBUtils.insertUser with current time. 
+	// Do not fill this manually.
 	private Timestamp registrationDate;
 	
-	public User() {}
+	public User() {
+		
+	}
+	
+	public User(String userName, String password) {
+		super();
+		this.userName = userName;
+		this.password = password;
+	}
+	
+	
+	public User(String userName, String password, String bio, Timestamp registrationDate) {
+		super();
+		this.userName = userName;
+		this.password = password;
+		this.bio = bio;
+
+	}
 
 	public String getUserName() {
 		return userName;
