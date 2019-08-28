@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import instagram.clone.beans.User;
 import instagram.clone.utils.DBUtils;
@@ -29,7 +30,7 @@ public class RegisterServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/registerView.jsp");
+		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/registerView.jsp");
 		
 		dispatcher.forward(request, response);
 		
@@ -39,8 +40,13 @@ public class RegisterServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
+		System.out.println("in doPost");
+		
 		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
+		String bio = request.getParameter("bio");
+		
+		User user = new User(userName, password, bio);
 
 		
 		String errorString = null;
@@ -49,8 +55,10 @@ public class RegisterServlet extends HttpServlet {
 		if (userName == null || password == null || userName.length() == 0 || password.length() == 0) {
 			hasError = true;
 			errorString = "Please input username and/or password";
+			
 		}else {
 			Connection conn = MyUtils.getStoredConnection(request);
+			System.out.println("get sql connection");
 			
 			try {
 				
@@ -59,11 +67,12 @@ public class RegisterServlet extends HttpServlet {
 //				if(user != null) {
 //					errorString = "The username is already taken. Please choose a different username.";
 //					
-//					RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB_INF/views/registerView.jsp");
+//					RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB_INF/views/registerView.jsp");
+				
 //					dispatcher.forward(request, response);
 //				}
 				
-				User user = new User(userName, password);
+				
 				
 				DBUtils.insertUser(conn, user);
 				
@@ -81,9 +90,27 @@ public class RegisterServlet extends HttpServlet {
 			}
 		}
 		
-		// if no error redirect to home page with "Hello username" on top!
 		
-		// if hasError == true forward to registerView.jsp 
+		
+		if(hasError) {
+			// Store error message in request attribute
+			request.setAttribute("errorString", errorString);
+			
+			// Forward to register view 
+			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/registerView.jsp");
+			dispatcher.forward(request, response);	
+		}
+		
+		// if no error redirect to home page with "Hello username" on top!
+		else {
+			// Set user in formation in session
+			HttpSession session = request.getSession();
+			MyUtils.storeLoginedUser(session, user);
+			
+			response.sendRedirect(request.getContextPath() + "/home");
+		}
+		
+	
 		
 		
 		

@@ -24,7 +24,7 @@ public class User {
 	}
 	
 	
-	public User(String userName, String password, String bio, Timestamp registrationDate) {
+	public User(String userName, String password, String bio) {
 		super();
 		this.userName = userName;
 		this.password = password;
