@@ -86,6 +86,10 @@ public class JDBCFilter implements Filter {
 				
 				// Allow request to go forward
 				chain.doFilter(request, response);
+				
+				// Invoke the commit() method to complete the transaction with DB.
+				conn.commit();
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 				ConnectionUtils.rollbackQuietly(conn);

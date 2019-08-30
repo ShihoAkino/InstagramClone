@@ -69,8 +69,8 @@ public class DBUtils {
 	// add user to database
 	// use this when a user is registering to the app for the first time
 	public static void insertUser(Connection conn, User user) throws SQLException {
-		String sql = "INSERT INTO User(user_name, password, bio, registration_date)" 
-				+ "values (?, ?, ?, ?)";
+		String sql = "INSERT INTO User(user_name, password, bio) " 
+				+ "values (?, ?, ?)";
 		
 		PreparedStatement pstm = conn.prepareStatement(sql);
 		pstm.setString(1, user.getUserName());
@@ -82,7 +82,7 @@ public class DBUtils {
 			pstm.setString(3, user.getBio());
 		}
 		
-		pstm.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
+	
 		
 		pstm.executeUpdate();
 	}

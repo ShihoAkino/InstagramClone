@@ -40,6 +40,8 @@ public class RegisterServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
+
+		
 		System.out.println("in doPost");
 		
 		String userName = request.getParameter("userName");
@@ -59,20 +61,10 @@ public class RegisterServlet extends HttpServlet {
 		}else {
 			Connection conn = MyUtils.getStoredConnection(request);
 			System.out.println("get sql connection");
+			System.out.println(conn.toString());
 			
 			try {
-				
-//				User user = DBUtils.findUser(conn, userName);
-//				
-//				if(user != null) {
-//					errorString = "The username is already taken. Please choose a different username.";
-//					
-//					RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB_INF/views/registerView.jsp");
-				
-//					dispatcher.forward(request, response);
-//				}
-				
-				
+
 				
 				DBUtils.insertUser(conn, user);
 				
