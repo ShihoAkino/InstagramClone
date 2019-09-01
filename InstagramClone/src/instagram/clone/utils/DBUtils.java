@@ -20,13 +20,13 @@ public class DBUtils {
 			throws SQLException{
 		
 		String sql = "SELECT user_name, password, bio, registration_date "
-				+ "FROM User"
+				+ "FROM User "
 				+ "WHERE user_name = ? AND password = ?";
 		
 		PreparedStatement pstm = conn.prepareStatement(sql);
 		pstm.setString(1, userName);
 		pstm.setString(2, password);
-		
+				
 		ResultSet rs = pstm.executeQuery();
 		
 		if (rs.next()) {
