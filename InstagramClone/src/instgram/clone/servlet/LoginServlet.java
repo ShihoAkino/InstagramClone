@@ -2,8 +2,6 @@ package instgram.clone.servlet;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,20 +15,19 @@ import instagram.clone.beans.User;
 import instagram.clone.utils.DBUtils;
 import instagram.clone.utils.MyUtils;
 
-@WebServlet(urlPatterns = {"/register"})
-public class RegisterServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/login"})
+public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
 	
-	public RegisterServlet() {
+	public LoginServlet() {
 		super();
 	}
 	
-	@Override
+	@Override 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
-		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/registerView.jsp");
+		RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/views/loginView.jsp");
 		
 		dispatcher.forward(request, response);
 		
@@ -42,68 +39,53 @@ public class RegisterServlet extends HttpServlet {
 		
 		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
-		String bio = request.getParameter("bio");
 		
-		User user = new User(userName, password, bio);
-
-		
+		User user = null;
 		String errorString = null;
 		boolean hasError = false;
 		
 		if (userName == null || password == null || userName.length() == 0 || password.length() == 0) {
 			hasError = true;
-			errorString = "Please input username and/or password";
-		
-		}else if (password.length() < 5) {
-			hasError = true;
-			errorString = "Password length has to be longer than 5.";
-			
-		}else {
+			errorString = "Please input username and/or password.";
+		} else {
 			Connection conn = MyUtils.getStoredConnection(request);
 			
 			try {
-
+				user = DBUtils.findUser(conn, userName, password);
 				
-				DBUtils.insertUser(conn, user);
+				if (user == null) {
+					hasError = true;
+					errorString = "Invalid Username or Password.";
+				}
 				
-				
-			// SQLIntegrityConstraintViolationException handles duplicate entry.
-			} catch (SQLIntegrityConstraintViolationException e) {
-				hasError = true;
-				errorString = "The username is already taken. Please user a different one.";
-				
-				
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				hasError = true;
 				errorString = e.getMessage();
 			}
 		}
 		
-		
-		
-		if(hasError) {
-			// Store error message in request attribute
+		// If error, forward to login view
+		if (hasError) {
 			request.setAttribute("errorString", errorString);
 			
-			// Forward to register view 
-			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/registerView.jsp");
-			dispatcher.forward(request, response);	
-		}
-		
-		// if no error redirect to home page with "Hello username" on top!
-		else {
-			// Set user in formation in session
+			// may have to be this.getSErvletContext() rather than request.
+			// I don't know the difference so let's try 
+			RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/views/loginView.jsp");
+			dispatcher.forward(request, response);
+			
+		} else {
+			// store user info in session
 			HttpSession session = request.getSession();
+
 			MyUtils.storeLoginedUser(session, user);
 			
 			response.sendRedirect(request.getContextPath() + "/home");
 		}
 		
-	
-		
-		
 		
 	}
+	
+	
 
 }
