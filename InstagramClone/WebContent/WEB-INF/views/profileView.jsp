@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
 <title>Profile</title>
 </head>
 <body>
@@ -17,18 +18,24 @@
 	<p>${errorString}</p>
 	
 	<p>User name: ${loginedUser.userName}</p>
-	
-	<table>
-		
-		<c:forEach var="post" items="${posts}" >
-			<tr>
+
+
+	<c:forEach var="post" items="${posts}">
+		<div class="container">
+			<div>
+				<img src="${post.value.pictureLink}" alt="${post.value.description}" width="300" height="300">
+			</div>
+			<br>
+			<div>
 				<c:out value="${post.value.description}" />
-			</tr><br>
-	
-		</c:forEach>
-	
-	</table>
-	
+			</div>
+			<br>
+		</div>
+
+
+	</c:forEach>
+
+
 	<jsp:include page="_footer.jsp"></jsp:include>
 	
 </body>

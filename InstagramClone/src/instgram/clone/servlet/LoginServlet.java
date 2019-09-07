@@ -39,6 +39,8 @@ public class LoginServlet extends HttpServlet {
 		
 		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
+		String rememberMeStr = request.getParameter("rememberMe");
+		boolean remember = "Y".equals(rememberMeStr);
 		
 		User user = null;
 		String errorString = null;
@@ -77,8 +79,13 @@ public class LoginServlet extends HttpServlet {
 		} else {
 			// store user info in session
 			HttpSession session = request.getSession();
-
 			MyUtils.storeLoginedUser(session, user);
+			
+			if(remember) {
+				MyUtils.storeUserCookie(response, user);
+			} else {
+				MyUtils.deleteUserCookie(response);
+			}
 			
 			response.sendRedirect(request.getContextPath() + "/home");
 		}

@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
 <title>Login</title>
 </head>
 <body>
@@ -23,6 +24,10 @@
 			<tr>
 				<td>Password</td>
 				<td><input type="password" name="password" value="${user.password}"/></td>
+			</tr>
+			<tr>
+				<td>Remember Me</td>
+				<td><input type="checkbox" name="rememberMe" velue="Y" /></td>
 			</tr>
 			
 			<tr>
