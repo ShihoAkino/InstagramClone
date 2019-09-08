@@ -14,6 +14,13 @@ public class Post {
 
 	public Post() {
 	}
+	
+	public Post(String description, String author, String pictureLink, String category) {
+		this.description = description;
+		this.author = author;
+		this.pictureLink = pictureLink;
+		this.category = category;
+	}
 
 	public int getPostId() {
 		return postId;

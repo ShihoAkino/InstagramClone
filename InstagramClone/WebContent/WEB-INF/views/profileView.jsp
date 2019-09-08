@@ -18,6 +18,7 @@
 	<p>${errorString}</p>
 	
 	<p>User name: ${loginedUser.userName}</p>
+	<a href="addPost">Upload Photo</a>
 
 
 	<c:forEach var="post" items="${posts}">
