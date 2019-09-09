@@ -20,8 +20,8 @@ public class DBUtils {
 			throws SQLException{
 		
 		String sql = "SELECT user_name, password, bio, registration_date "
-				+ "FROM User "
-				+ "WHERE user_name = ? AND password = ?";
+				+ " FROM User "
+				+ " WHERE user_name = ? AND password = ?";
 		
 		PreparedStatement pstm = conn.prepareStatement(sql);
 		pstm.setString(1, userName);
@@ -46,8 +46,8 @@ public class DBUtils {
 			throws SQLException {
 		
 		String sql = "SELECT user_name, password, bio, registration_date"
-				+ "FROM User"
-				+ "WHERE user_name = ?";
+				+ " FROM User"
+				+ " WHERE user_name = ?";
 		
 		PreparedStatement pstm = conn.prepareStatement(sql);
 		pstm.setString(1, userName);
@@ -70,7 +70,7 @@ public class DBUtils {
 	// use this when a user is registering to the app for the first time
 	public static void insertUser(Connection conn, User user) throws SQLException {
 		String sql = "INSERT INTO User(user_name, password, bio) " 
-				+ "values (?, ?, ?)";
+				+ " values (?, ?, ?)";
 		
 		PreparedStatement pstm = conn.prepareStatement(sql);
 		pstm.setString(1, user.getUserName());
@@ -90,8 +90,8 @@ public class DBUtils {
 	// add a post to the database
 	// user this when a user upload a post 
 	public static void insertPost(Connection conn, Post post) throws SQLException { 
-		String sql = "INSERT INTO Post(description, author, pictureLink, posted_date, category)"
-				+ "values(?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO Post(description, author, picture_link, category)"
+				+ " values(?, ?, ?, ?)";
 		
 		PreparedStatement pstm = conn.prepareStatement(sql);
 		
@@ -103,12 +103,12 @@ public class DBUtils {
 		
 		pstm.setString(2, post.getAuthor());
 		pstm.setString(3, post.getPictureLink());
-		pstm.setTimestamp(4, post.getPostedDate());
+
 		
 		if (post.getCategory() == null) {
-			pstm.setString(5, null);
+			pstm.setString(4, null);
 		} else {
-			pstm.setString(5, post.getCategory());
+			pstm.setString(4, post.getCategory());
 		}
 		
 		pstm.executeUpdate();

@@ -17,18 +17,22 @@
 	
 	<p>${errorString}</p>
 	
-	<p>User name: ${loginedUser.userName}</p>
-	<a href="addPost">Upload Photo</a>
+	<p> ${loginedUser.bio}</p>
+	<h4><a href="addPost">Upload Photo</a></h4>
 
 
 	<c:forEach var="post" items="${posts}">
-		<div class="container">
-			<div>
+		<div style="text-align:center">
+			<div >
 				<img src="${post.value.pictureLink}" alt="${post.value.description}" width="300" height="300">
 			</div>
 			<br>
 			<div>
-				<c:out value="${post.value.description}" />
+				<c:out value="${post.value.postedDate}" />
+			</div>
+			<br>
+			<div>
+				<p><c:out value="${post.value.description}" /></p>
 			</div>
 			<br>
 		</div>

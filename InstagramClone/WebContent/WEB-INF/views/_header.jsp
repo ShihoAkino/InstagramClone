@@ -4,7 +4,7 @@
     
 <div style="background: #c0c5ce; height: 55px; padding: 5px;">
   <div style="float: left">
-     <h1>My Site</h1>
+     <h1>Insta Clone</h1>
   </div>
  
   <div style="float: right; padding: 10px; text-align: right;">
