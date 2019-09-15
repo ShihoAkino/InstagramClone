@@ -117,10 +117,19 @@ public class DBUtils {
 	
 	// Find posts by author
 	public static Map<Integer, Post> findPost(Connection conn, String author) throws SQLException {
-		String sql = "SELECT * FROM Post WHERE author = ?";
 		
-		PreparedStatement pstm = conn.prepareStatement(sql);
-		pstm.setString(1, author);
+		PreparedStatement pstm;
+		String sql = "SELECT * FROM Post";
+		
+		if (author != null) {
+				sql += " WHERE author = ?";
+				pstm = conn.prepareStatement(sql);
+				pstm.setString(1, author);
+		} else {
+			pstm = conn.prepareStatement(sql);
+		}
+		
+		
 		
 		ResultSet rs = pstm.executeQuery();
 		
